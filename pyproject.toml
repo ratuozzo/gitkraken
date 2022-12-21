@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "kraken"
+version = "0.1.0"
+description = ""
+authors = ["ratuozzo <ratuozzo@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pykrakenapi = "^0.3.1"
+asyncio = "^3.4.3"
+plotly = "^5.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
