@@ -44,8 +44,8 @@ def rsi(df, periods=14):
     up = close_delta.clip(lower=0)
     down = -1 * close_delta.clip(upper=0)
 
-    ma_up = up.rolling(window=periods, adjust=False).mean()
-    ma_down = down.rolling(window=periods, adjust=False).mean()
+    ma_up = up.rolling(window=periods).mean()
+    ma_down = down.rolling(window=periods).mean()
 
     rsi = ma_up / ma_down
     rsi = 100 - (100 / (1 + rsi))
