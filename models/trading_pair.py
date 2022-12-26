@@ -25,28 +25,23 @@ class TradingPair:
         df = df.dropna()  # drop all rows with null values
         return df
 
-    def get_rsi_data(self, window=30) -> pd.DataFrame:
+    def get_rsi_data(self, periods=14) -> pd.DataFrame:
+        """
+        Returns rsi
+        """
         df = self.get_ohlc_data()
-        df = rsi(df)
-        return df
+        close_delta = df["close"].diff()
+        print(close_delta)
+        # Make two series: one for lower closes and one for higher closes
+        up = close_delta.clip(lower=0)
+        down = -1 * close_delta.clip(upper=0)
+
+        ma_up = up.rolling(window=periods).mean()
+        ma_down = down.rolling(window=periods).mean()
+
+        rsi = ma_up / ma_down
+        rsi = 100 - (100 / (1 + rsi))
+        return rsi
 
     def get_pair(self) -> str:
         return self.pair
-
-
-def rsi(df, periods=14):
-    """
-    Returns a pd.Series with the relative strength index.
-    """
-    close_delta = df["close"].diff()
-    print(close_delta)
-    # Make two series: one for lower closes and one for higher closes
-    up = close_delta.clip(lower=0)
-    down = -1 * close_delta.clip(upper=0)
-
-    ma_up = up.rolling(window=periods).mean()
-    ma_down = down.rolling(window=periods).mean()
-
-    rsi = ma_up / ma_down
-    rsi = 100 - (100 / (1 + rsi))
-    return rsi
