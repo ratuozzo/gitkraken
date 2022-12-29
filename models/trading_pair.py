@@ -47,6 +47,7 @@ class TradingPair:
 
             rsi = ma_up / ma_down
             rsi = 100 - (100 / (1 + rsi))
+            rsi = rsi.dropna()
             return rsi
         except Exception as e:
             st.error("Error on get_rsi_data", icon="🚨")
