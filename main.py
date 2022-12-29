@@ -14,7 +14,7 @@ pairs = api.get_tradable_assets_pais()
 intervals = {
     # 1: "1 min",
     # 5: "5 min",
-    # 15: "15 min",
+    15: "15 min",
     30: "30 min",
     60: "1 hour",
     240: "4 hour",
@@ -64,7 +64,7 @@ with st.container():
     st.header("Candlestick chart")
     st.plotly_chart(fig_candle, use_container_width=True)
 
-    st.header("Moving Average chart")
+    st.header("Simple Moving Average Chart")
     window = st.selectbox(
         "Select SMA window",
         options=[24, 30, 60, 90, 180],
@@ -74,12 +74,17 @@ with st.container():
     )
     st.plotly_chart(fig_sma, use_container_width=True)
 
+    st.header("Relative Strength Index Chart")
+    period = st.selectbox(
+        "Select RSI window",
+        options=[24, 30, 60, 90, 180],
+    )
+    fig_rsi = px.line(selected_pair.get_rsi_data(period))
+    st.plotly_chart(fig_rsi, use_container_width=True)
+
+    st.header("SMA vs Close")
     fig_sma_close = px.line(selected_pair.get_moving_average_data(window))
     st.plotly_chart(fig_sma_close, use_container_width=True)
-
-    st.header("RSI chart")
-    fig_rsi = px.line(selected_pair.get_rsi_data())
-    st.plotly_chart(fig_rsi, use_container_width=True)
 
     st.header("Raw data")
     st.dataframe(selected_pair.ohlc_data)
